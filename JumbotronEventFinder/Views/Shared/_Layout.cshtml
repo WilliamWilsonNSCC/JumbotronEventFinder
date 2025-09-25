@@ -8,8 +8,17 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/JumbotronEventFinder.styles.css" asp-append-version="true" />
+    <style>
+        .fakeimg {
+            height: 200px;
+            background: #aaa;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-info-subtle">
+    <div class="container-sm text-center text-info bg-secondary-subtle">
+        @RenderBody()
+    </div>    
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-secondary bg-gradient bg-opacity-75 border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -21,24 +30,36 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="btn text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Index">Events</a>
+                            <a class="btn nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Events">Events</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Sponsors">Owners</a>
+                            <a class="btn disabled nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Owners">Owners</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
+    <div class="container-sm">
+        <main role="main" class="p-3 text-center border border-black bg-secondary-subtle">
+            @*All images link to event*@
+            <div class="container-sm row">
+                <div class="col-sm-3 fakeimg border border-black">Image</div>
+                <div class="col-sm-3">Random text</div>
+                <div class="col-sm-3">Random text</div>
+                <div class="col-sm-3 fakeimg border border-black">Image</div>
+            </div>
+            @* <div class="row">
+                <div class="fakeimg">Image</div>
+                <div class="col border border-black">Image</div>
+                <div class="col border border-black">Image</div>
+            </div> *@
         </main>
     </div>
+            
 
     <footer class="border-top footer text-muted">
         <div class="container">

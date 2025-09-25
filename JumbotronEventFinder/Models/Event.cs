@@ -1,6 +1,6 @@
 ﻿namespace JumbotronEventFinder.Models
 {
-    public class Events
+    public class Event
     {
         internal string CategoryTitle;
 

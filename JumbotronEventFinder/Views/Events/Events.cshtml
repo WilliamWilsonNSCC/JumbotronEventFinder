@@ -1,7 +1,23 @@
-﻿@{
+﻿@model List<JumbotronEventFinder.Models.Event>
+@{
     ViewData["Title"] = "Events";
 }
 
-<h2>Event List</h2>
+@* <div class="text-center border border-black bg-secondary-subtle"> *@
+    <h1 class="text-info">Events</h1>
+    <p>List of live events.</p>
+@* </div> *@
 
-<p>List of Events</p>
+@* @foreach(var item in Model)
+{
+    <div>
+        <h2>@item.Title</h2>
+        <p>
+            @item.Filename
+            @item.EventId<br />
+            @item.Description<br />
+            @item.Location<br />
+            @item.Date<br />
+        </p>
+    </div>
+} *@
