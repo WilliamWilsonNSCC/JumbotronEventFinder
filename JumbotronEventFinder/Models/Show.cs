@@ -1,10 +1,10 @@
 ﻿namespace JumbotronEventFinder.Models
 {
-    public class Event
+    public class Show
     {
-        internal string CategoryTitle;
+        //internal string CategoryTitle;
 
-        public int EventId { get; set; }
+        public int ShowId { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Location { get; set; } = string.Empty;

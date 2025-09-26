@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using JumbotronEventFinder.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<JumbotronEventFinderContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("JumbotronEventFinderContext") ?? throw new InvalidOperationException("Connection string 'JumbotronEventFinderContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
