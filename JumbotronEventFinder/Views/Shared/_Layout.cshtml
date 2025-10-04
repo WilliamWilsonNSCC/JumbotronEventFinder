@@ -8,12 +8,20 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/JumbotronEventFinder.styles.css" asp-append-version="true" />
+
+    @* new *@
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
 </head>
-<body class="bg-info-subtle">   
+<body class="warning-soft-gradient p-3">   
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-secondary bg-gradient bg-opacity-75 border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark bg-gradient bg-opacity-75 border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand h4 text-info pt-2" asp-area="" asp-controller="Home" asp-action="Index">Jumbotron Event Finder</a>
+                @* <a class="navbar-text h4 text-info pt-2" asp-area="" asp-controller="Home" asp-action="Index">Jumbotron Event Finder</a> *@
+                <a class="navbar-brand text-warning pt-2 jumbotron-font text-glow" asp-area="" asp-controller="Home" asp-action="Index">
+                    Jumbotron Event Finder
+                </a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,10 +29,10 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="btn text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="btn text-warning jumbotron-font-2 pt-2" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn nav-link text-dark" asp-area="" asp-controller="Shows" asp-action="Index">Shows</a>
+                            <a class="btn text-warning jumbotron-font-2 p-2" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
                         </li>
                     </ul>
                 </div>
@@ -32,7 +40,7 @@
         </nav>
     </header>
     <div class="container-sm">
-        <main role="main" class="p-3 text-center border border-black bg-secondary-subtle">
+        <main role="main" class="p-3 text-center">
             @RenderBody()
         </main>
     </div>

@@ -19,36 +19,11 @@ namespace JumbotronEventFinder.Controllers
             _context = context;
         }
 
-        // GET: Shows
-        public async Task<IActionResult> Index()
-        {
-            var jumbotronEventFinderContext = _context.Show.Include(s => s.Category);
-            return View(await jumbotronEventFinderContext.ToListAsync());
-        }
-
-        // GET: Shows/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var show = await _context.Show
-                .Include(s => s.Category)
-                .FirstOrDefaultAsync(m => m.ShowId == id);
-            if (show == null)
-            {
-                return NotFound();
-            }
-
-            return View(show);
-        }
-
         // GET: Shows/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "CategoryId");
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "Title");
+            
             return View();
         }
 
@@ -57,15 +32,21 @@ namespace JumbotronEventFinder.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShowId,Title,Description,Location,Creator,Filename,Date,CreateDate,CategoryId")] Show show)
+        public async Task<IActionResult> Create([Bind("ShowId,Title,Description,Location,Creator,Filename,Date,CategoryId")] Show show)
         {
+            show.CreateDate = DateTime.Now;
+            
             if (ModelState.IsValid)
             {
                 _context.Add(show);
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Index), "Home");
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "CategoryId", show.CategoryId);
+
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "Title", show.CategoryId);
+
             return View(show);
         }
 
@@ -78,11 +59,14 @@ namespace JumbotronEventFinder.Controllers
             }
 
             var show = await _context.Show.FindAsync(id);
+
             if (show == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "CategoryId", show.CategoryId);
+
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "Title", show.CategoryId);
+
             return View(show);
         }
 
@@ -116,9 +100,12 @@ namespace JumbotronEventFinder.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Index), "Home");
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "CategoryId", show.CategoryId);
+
+            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "Title", show.CategoryId);
+
             return View(show);
         }
 
@@ -147,12 +134,14 @@ namespace JumbotronEventFinder.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var show = await _context.Show.FindAsync(id);
+
             if (show != null)
             {
                 _context.Show.Remove(show);
             }
 
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

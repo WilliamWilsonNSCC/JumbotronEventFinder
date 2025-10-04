@@ -2,6 +2,25 @@ html {
   font-size: 14px;
 }
 
+/*new*/
+.jumbotron-font {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.jumbotron-font-2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.warning-soft-gradient {
+    /* Customize the colors and direction here */
+    background-image: linear-gradient(to bottom left, #cc9900, #ffc107);
+}
+
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
