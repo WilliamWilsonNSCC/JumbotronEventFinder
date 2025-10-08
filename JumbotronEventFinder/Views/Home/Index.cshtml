@@ -15,9 +15,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Filename)
-            </th>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -44,7 +42,10 @@
         {
             <tr>
                 <td>
-                    <img src="/images/@item.Filename" alt="@item.Title" class="w-50" />
+                    @if (!String.IsNullOrEmpty(item.Filename))
+                    {
+                        <img src="/photos/@item.Filename" alt="@item.Title" class="w-50" />
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)

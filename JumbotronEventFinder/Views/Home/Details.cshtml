@@ -6,9 +6,12 @@
 
 <h1>Details</h1>
 
-<div class="bg-secondary-subtle">
-    <img src="/images/@Model.Filename" alt="@Model.Title" class="w-50" />
-</div>
+@if (!String.IsNullOrEmpty(Model.Filename))
+{
+    <div class="bg-secondary-subtle">
+        <img src="/photos/@Model.Filename" alt="@Model.Title" class="w-25" />
+    </div>
+}
 
 <div class="bg-secondary-subtle">
     <h4>Show</h4>

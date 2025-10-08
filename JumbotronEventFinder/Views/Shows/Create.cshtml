@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="Shows" asp-action="Create">
+        <form asp-controller="Shows" asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3">
                 <label asp-for="Title" class="control-label"></label>
@@ -32,11 +32,11 @@
                 <input asp-for="Creator" class="form-control" />
                 <span asp-validation-for="Creator" class="text-danger"></span>
             </div>
-            <div class="mb-3">
+            @* <div class="mb-3">
                 <label asp-for="Filename" class="control-label"></label>
                 <input asp-for="Filename" class="form-control" />
                 <span asp-validation-for="Filename" class="text-danger"></span>
-            </div>
+            </div> *@
             <div class="mb-3">
                 <label asp-for="Date" class="control-label"></label>
                 <input asp-for="Date" class="form-control" />
@@ -46,6 +46,11 @@
                 <label asp-for="CreateDate" class="control-label"></label>
                 <input asp-for="CreateDate" class="form-control" />
                 <span asp-validation-for="CreateDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="FormFile" class="control-label"></label>
+                <input asp-for="FormFile" class="form-control" />
+                <span asp-validation-for="FormFile" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="CategoryId" class="control-label"></label>

@@ -32,12 +32,34 @@ namespace JumbotronEventFinder.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShowId,Title,Description,Location,Creator,Filename,Date,CategoryId")] Show show)
+        public async Task<IActionResult> Create([Bind("ShowId,Title,Description,Location,Creator,Date,CategoryId,FormFile")] Show show)
         {
             show.CreateDate = DateTime.Now;
             
             if (ModelState.IsValid)
             {
+                //
+                // Step 1: save the file (optionally)
+                //
+                if (show.FormFile != null)
+                {
+                    // Create a unique filename using a Guid          
+                    string filename = Guid.NewGuid().ToString() + Path.GetExtension(show.FormFile.FileName); // f81d4fae-7dec-11d0-a765-00a0c91e6bf6.jpg
+
+                    // Initialize the filename in photo record
+                    show.Filename = filename;
+
+                    // Get the file path to save the file. Use Path.Combine to handle diffferent OS
+                    string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", filename);
+
+                    // Save file
+                    using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create))
+                    {
+                        await show.FormFile.CopyToAsync(fileStream);
+                    }
+                }
+
+                //Step 2: Save record to database
                 _context.Add(show);
 
                 await _context.SaveChangesAsync();
@@ -75,7 +97,7 @@ namespace JumbotronEventFinder.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ShowId,Title,Description,Location,Creator,Filename,Date,CreateDate,CategoryId")] Show show)
+        public async Task<IActionResult> Edit(int id, [Bind("ShowId,Title,Description,Location,Creator,Filename, Date,CreateDate,CategoryId, FormFile")] Show show)
         {
             if (id != show.ShowId)
             {
@@ -84,6 +106,27 @@ namespace JumbotronEventFinder.Controllers
 
             if (ModelState.IsValid)
             {
+                //
+                // Step 1: save the file (optionally)
+                //
+                if (show.FormFile != null)
+                {
+                    // Create a unique filename using a Guid          
+                    string filename = Guid.NewGuid().ToString() + Path.GetExtension(show.FormFile.FileName); // f81d4fae-7dec-11d0-a765-00a0c91e6bf6.jpg
+
+                    // Initialize the filename in photo record
+                    show.Filename = filename;
+
+                    // Get the file path to save the file. Use Path.Combine to handle diffferent OS
+                    string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", filename);
+
+                    // Save file
+                    using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create))
+                    {
+                        await show.FormFile.CopyToAsync(fileStream);
+                    }
+                }
+
                 try
                 {
                     _context.Update(show);
@@ -142,7 +185,7 @@ namespace JumbotronEventFinder.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Home");
         }
 
         private bool ShowExists(int id)
