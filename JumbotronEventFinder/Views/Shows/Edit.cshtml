@@ -5,19 +5,20 @@
 }
 
 <h1>Edit</h1>
-@if (!String.IsNullOrEmpty(Model.Filename))
+@* @if (!String.IsNullOrEmpty(Model.Filename))
 {
     <div class="bg-secondary-subtle">
         <img src="/photos/@Model.Filename" alt="@Model.Title" class="w-25" />
     </div>
-}
+} *@
 <h4>Show</h4>
 <hr />
 <div class="row bg-secondary-subtle">
     <div class="col-md-4">
         <form asp-controller="Shows" asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ShowId" /> 
+            <input type="hidden" asp-for="ShowId" />
+            <input type="hidden" asp-for="Filename" /> @*keeps image locked in if no new image is selected *@
             <div class="mb-3">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -50,19 +51,21 @@
             </div>
             <div class="mb-3">
                 <label asp-for="CreateDate" class="control-label"></label>
-                <input asp-for="CreateDate" class="form-control" />
+                <input asp-for="CreateDate" class="form-control" readonly/>
                 <span asp-validation-for="CreateDate" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <input type="hidden" asp-for="Filename" /> @*keeps image locked in if no new image is selected *@
-                <label asp-for="FormFile" class="control-label"></label>
-                <input asp-for="FormFile" class="form-control" />
-                <span asp-validation-for="FormFile" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="CategoryId" class="control-label"></label>
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div>
+                <img src="/photos/@Model.Filename" alt="@Model.Title" class="w-50" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="FormFile" class="control-label"></label>
+                <input asp-for="FormFile" class="form-control" />
+                <span asp-validation-for="FormFile" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <input type="submit" value="Save" class="btn btn-primary" />

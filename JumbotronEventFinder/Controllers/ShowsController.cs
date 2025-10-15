@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using JumbotronEventFinder.Data;
 using JumbotronEventFinder.Models;
+using System.Configuration;
+using System.Reflection.Metadata;
 
 namespace JumbotronEventFinder.Controllers
 {
@@ -49,7 +51,7 @@ namespace JumbotronEventFinder.Controllers
                     // Initialize the filename in photo record
                     show.Filename = filename;
 
-                    // Get the file path to save the file. Use Path.Combine to handle diffferent OS
+                    // Get the file path to save the file. Use Path.Combine to handle different OS
                     string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", filename);
 
                     // Save file
@@ -111,14 +113,25 @@ namespace JumbotronEventFinder.Controllers
                 //
                 if (show.FormFile != null)
                 {
-                    // Create a unique filename using a Guid          
-                    string filename = Guid.NewGuid().ToString() + Path.GetExtension(show.FormFile.FileName); // f81d4fae-7dec-11d0-a765-00a0c91e6bf6.jpg
+                    // determine new filename         
+                    string newFilename = Guid.NewGuid().ToString() + Path.GetExtension(show.FormFile.FileName); // f81d4fae-7dec-11d0-a765-00a0c91e6bf6.jpg
 
-                    // Initialize the filename in photo record
-                    show.Filename = filename;
+                    //Delete the old file
+                    if (!string.IsNullOrEmpty(show.Filename) && show.Filename != newFilename)
+                    {
+                        string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", show.Filename);
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+                        
+                    }
 
-                    // Get the file path to save the file. Use Path.Combine to handle diffferent OS
-                    string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", filename);
+                    // set the new filename in the db record
+                    show.Filename = newFilename;
+                    
+                    // upload the new file
+                    string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", newFilename);
 
                     // Save file
                     using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create))
@@ -126,6 +139,10 @@ namespace JumbotronEventFinder.Controllers
                         await show.FormFile.CopyToAsync(fileStream);
                     }
                 }
+                
+                //
+                //Step 2: save in database
+                //
 
                 try
                 {
@@ -163,6 +180,7 @@ namespace JumbotronEventFinder.Controllers
             var show = await _context.Show
                 .Include(s => s.Category)
                 .FirstOrDefaultAsync(m => m.ShowId == id);
+
             if (show == null)
             {
                 return NotFound();
@@ -180,6 +198,16 @@ namespace JumbotronEventFinder.Controllers
 
             if (show != null)
             {
+
+                if (!string.IsNullOrEmpty(show.Filename))
+                {
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", show.Filename);
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+
                 _context.Show.Remove(show);
             }
 
