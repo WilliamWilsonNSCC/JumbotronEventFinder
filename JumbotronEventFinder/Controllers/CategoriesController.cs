@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using JumbotronEventFinder.Data;
 using JumbotronEventFinder.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JumbotronEventFinder.Controllers
 {
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly JumbotronEventFinderContext _context;

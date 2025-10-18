@@ -1,0 +1,12 @@
+﻿<h1>Logout</h1>
+
+<p>Are you sure you want to logout?</p>
+
+<form asp-action="LogoutConfirmed">
+    <p>
+        <input type="submit" value="logout" class="btn btn-primary" />
+    </p>
+    <p>
+        <a asp-controller="Home" asp-action="Index">Back to home.</a>
+    </p>
+</form>

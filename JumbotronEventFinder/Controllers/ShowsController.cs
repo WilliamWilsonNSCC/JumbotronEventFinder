@@ -9,9 +9,11 @@ using JumbotronEventFinder.Data;
 using JumbotronEventFinder.Models;
 using System.Configuration;
 using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JumbotronEventFinder.Controllers
 {
+    [Authorize]
     public class ShowsController : Controller
     {
         private readonly JumbotronEventFinderContext _context;
