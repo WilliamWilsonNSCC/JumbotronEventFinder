@@ -9,6 +9,12 @@ namespace JumbotronEventFinder.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IConfiguration _configuration;
+        
+        public AccountController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         //Get: /Account/Login
         public IActionResult Login()
@@ -23,7 +29,7 @@ namespace JumbotronEventFinder.Controllers
         {
 
             //Validate username and password
-            if (!ModelState.IsValid)
+            if (username == _configuration["event_username"] && password == _configuration["event_password"])
             {
                 var claims = new List<Claim>
                 {
