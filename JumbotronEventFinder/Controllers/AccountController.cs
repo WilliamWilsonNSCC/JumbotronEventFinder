@@ -11,6 +11,7 @@ namespace JumbotronEventFinder.Controllers
     {
         private readonly IConfiguration _configuration;
         
+        
         public AccountController(IConfiguration configuration)
         {
             _configuration = configuration;

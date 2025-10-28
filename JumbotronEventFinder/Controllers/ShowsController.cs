@@ -1,26 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using JumbotronEventFinder.Data;
+using JumbotronEventFinder.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using JumbotronEventFinder.Data;
-using JumbotronEventFinder.Models;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Reflection.Metadata;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace JumbotronEventFinder.Controllers
 {
     [Authorize]
     public class ShowsController : Controller
     {
+        private readonly IConfiguration _configuration;
         private readonly JumbotronEventFinderContext _context;
 
-        public ShowsController(JumbotronEventFinderContext context)
+        private readonly BlobContainerClient _containerClient;
+
+        public ShowsController(IConfiguration configuration, JumbotronEventFinderContext context)
         {
             _context = context;
+            _configuration = configuration;
+
+            //Setup blob container client
+            var connectionString = _configuration["AzureStorage"];
+            var containerName = "jumbotron-event-uploads";
+            _containerClient = new BlobContainerClient(connectionString, containerName);
         }
 
         // GET: Shows/Create
@@ -47,20 +58,42 @@ namespace JumbotronEventFinder.Controllers
                 //
                 if (show.FormFile != null)
                 {
-                    // Create a unique filename using a Guid          
-                    string filename = Guid.NewGuid().ToString() + Path.GetExtension(show.FormFile.FileName); // f81d4fae-7dec-11d0-a765-00a0c91e6bf6.jpg
+                    //// Create a unique filename using a Guid          
+                    //string filename = Guid.NewGuid().ToString() + Path.GetExtension(show.FormFile.FileName); // f81d4fae-7dec-11d0-a765-00a0c91e6bf6.jpg
 
-                    // Initialize the filename in photo record
-                    show.Filename = filename;
+                    //// Initialize the filename in photo record
+                    //show.Filename = filename;
 
-                    // Get the file path to save the file. Use Path.Combine to handle different OS
-                    string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", filename);
+                    //// Get the file path to save the file. Use Path.Combine to handle different OS
+                    //string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", filename);
 
-                    // Save file
-                    using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create))
+                    //// Save file
+                    //using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create))
+                    //{
+                    //    await show.FormFile.CopyToAsync(fileStream);
+                    //}
+
+                    //
+                    // Upload file to Azure Blob Storage
+                    //
+
+                    // store the file to upload in fileUpload
+                    IFormFile fileUpload = show.FormFile;
+
+                    // craete a unique filename for the blob
+                    string blobName = Guid.NewGuid().ToString() + "_" + fileUpload.FileName;
+
+                    var blobClient = _containerClient.GetBlobClient(blobName);
+
+                    using (var stream = fileUpload.OpenReadStream())
                     {
-                        await show.FormFile.CopyToAsync(fileStream);
+                        await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = fileUpload.ContentType });
                     }
+
+                    string blobURL = blobClient.Uri.ToString();
+
+                    // assign the blob URL to the record to save in Db
+                    show.Filename = blobURL;
                 }
 
                 //Step 2: Save record to database
