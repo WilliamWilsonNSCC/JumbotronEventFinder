@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -58,21 +59,6 @@ namespace JumbotronEventFinder.Controllers
                 //
                 if (show.FormFile != null)
                 {
-                    //// Create a unique filename using a Guid          
-                    //string filename = Guid.NewGuid().ToString() + Path.GetExtension(show.FormFile.FileName); // f81d4fae-7dec-11d0-a765-00a0c91e6bf6.jpg
-
-                    //// Initialize the filename in photo record
-                    //show.Filename = filename;
-
-                    //// Get the file path to save the file. Use Path.Combine to handle different OS
-                    //string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", filename);
-
-                    //// Save file
-                    //using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create))
-                    //{
-                    //    await show.FormFile.CopyToAsync(fileStream);
-                    //}
-
                     //
                     // Upload file to Azure Blob Storage
                     //
@@ -80,7 +66,7 @@ namespace JumbotronEventFinder.Controllers
                     // store the file to upload in fileUpload
                     IFormFile fileUpload = show.FormFile;
 
-                    // craete a unique filename for the blob
+                    // create a unique filename for the blob
                     string blobName = Guid.NewGuid().ToString() + "_" + fileUpload.FileName;
 
                     var blobClient = _containerClient.GetBlobClient(blobName);
@@ -143,36 +129,81 @@ namespace JumbotronEventFinder.Controllers
 
             if (ModelState.IsValid)
             {
+                var existingShow = await _context.Show.AsNoTracking().FirstOrDefaultAsync(s => s.ShowId == id);
+
+                if (existingShow == null)
+                {
+                    return NotFound();
+                }
+
+                show.Filename = existingShow.Filename;
+
                 //
                 // Step 1: save the file (optionally)
                 //
                 if (show.FormFile != null)
                 {
-                    // determine new filename         
-                    string newFilename = Guid.NewGuid().ToString() + Path.GetExtension(show.FormFile.FileName); // f81d4fae-7dec-11d0-a765-00a0c91e6bf6.jpg
+                    //// determine new filename         
+                    //string newFilename = Guid.NewGuid().ToString() + Path.GetExtension(show.FormFile.FileName); // f81d4fae-7dec-11d0-a765-00a0c91e6bf6.jpg
 
-                    //Delete the old file
-                    if (!string.IsNullOrEmpty(show.Filename) && show.Filename != newFilename)
+                    //Blob code added Nov 3/2025
+
+                    if (!string.IsNullOrEmpty(existingShow.Filename))
                     {
-                        string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", show.Filename);
-                        if (System.IO.File.Exists(oldFilePath))
+                        try
                         {
-                            System.IO.File.Delete(oldFilePath);
+                            string oldBlobName = GetBlobNameFromUrl(existingShow.Filename);
+                            if (!string.IsNullOrEmpty(oldBlobName))
+                            {
+                                var oldBlob = _containerClient.GetBlobClient(oldBlobName);
+                                await oldBlob.DeleteIfExistsAsync();
+                            }
+                        }catch(Exception ex)
+                        {
+                            Console.WriteLine($"Error deleting old blob: {ex.Message}");
                         }
-                        
                     }
 
-                    // set the new filename in the db record
-                    show.Filename = newFilename;
-                    
-                    // upload the new file
-                    string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", newFilename);
+                    // store the file to upload in fileUpload
+                    IFormFile fileUpload = show.FormFile;
 
-                    // Save file
-                    using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create))
+                    // create a unique filename for the blob
+                    string blobName = Guid.NewGuid().ToString() + Path.GetExtension(fileUpload.FileName);
+
+                    var blobClient = _containerClient.GetBlobClient(blobName);
+
+                    using (var stream = fileUpload.OpenReadStream())
                     {
-                        await show.FormFile.CopyToAsync(fileStream);
+                        await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = fileUpload.ContentType });
                     }
+
+                    string blobURL = blobClient.Uri.ToString();
+
+                    // assign the blob URL to the record to save in Db
+                    show.Filename = blobURL;
+
+                    ////Delete the old file
+                    //if (!string.IsNullOrEmpty(show.Filename) && show.Filename != newFilename)
+                    //{
+                    //    string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", show.Filename);
+                    //    if (System.IO.File.Exists(oldFilePath))
+                    //    {
+                    //        System.IO.File.Delete(oldFilePath);
+                    //    }
+
+                    //}
+
+                    //// set the new filename in the db record
+                    //show.Filename = newFilename;
+
+                    //// upload the new file
+                    //string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", newFilename);
+
+                    //// Save file
+                    //using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create))
+                    //{
+                    //    await show.FormFile.CopyToAsync(fileStream);
+                    //}
                 }
                 
                 //
@@ -236,11 +267,23 @@ namespace JumbotronEventFinder.Controllers
 
                 if (!string.IsNullOrEmpty(show.Filename))
                 {
-                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", show.Filename);
-                    if (System.IO.File.Exists(filePath))
+                    try
                     {
-                        System.IO.File.Delete(filePath);
+                        string blobName = GetBlobNameFromUrl(show.Filename);
+                        if (!string.IsNullOrEmpty(blobName))
+                        {
+                            var blob = _containerClient.GetBlobClient(blobName);
+                            await blob.DeleteIfExistsAsync();
+                        }
+                    }catch(Exception ex)
+                    {
+                        Console.WriteLine($"Error deleting blob: {ex.Message}");
                     }
+                    //string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", show.Filename);
+                    //if (System.IO.File.Exists(filePath))
+                    //{
+                    //    System.IO.File.Delete(filePath);
+                    //}
                 }
 
                 _context.Show.Remove(show);
@@ -254,6 +297,30 @@ namespace JumbotronEventFinder.Controllers
         private bool ShowExists(int id)
         {
             return _context.Show.Any(e => e.ShowId == id);
+        }
+
+        //Extacts blob name from container
+        private string GetBlobNameFromUrl(string blobUrl)
+        {
+            if (string.IsNullOrEmpty(blobUrl))
+            {
+                return string.Empty;
+            }
+
+            if(Uri.TryCreate(blobUrl, UriKind.Absolute, out Uri uri))
+            {
+                string path = uri.PathAndQuery;
+
+                var containerName = "jumbotron-event-uploads";
+
+                int containerIndex = path.IndexOf($"/jumborton-event-uploads/", StringComparison.OrdinalIgnoreCase);
+
+                if(containerIndex != -1)
+                {
+                    return path.Substring(containerIndex + containerName.Length + 2);
+                }
+            }
+            return string.Empty;
         }
     }
 }

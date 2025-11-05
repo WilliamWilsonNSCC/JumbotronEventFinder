@@ -47,7 +47,7 @@ namespace JumbotronEventFinder.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
 
-                string? ReturnUrl = returnUrl;
+                //string? ReturnUrl = returnUrl;
 
                 if (!string.IsNullOrEmpty(returnUrl))
                 {
