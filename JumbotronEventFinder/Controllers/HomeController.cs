@@ -22,7 +22,7 @@ namespace JumbotronEventFinder.Controllers
         public async Task<IActionResult> Index()
         {
             var shows = await _context.Show
-                .OrderByDescending(m => m.Date)
+                .OrderBy(m => m.Date)
                 .Include(s => s.Category)
                 .ToListAsync();
 
