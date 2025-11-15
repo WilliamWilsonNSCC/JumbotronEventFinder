@@ -15,7 +15,7 @@
 
 <div class="bg-secondary-subtle">
     <h4>Show</h4>
-    <h5><a asp-controller="Purchase" asp-action="Index" asp-route-id="@Model?.Title">Purchase Tickets</a></h5>
+    <h5><a asp-controller="Purchase" asp-action="Index" asp-route-id="@Model.Title">Purchase Tickets</a></h5>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -56,8 +56,8 @@
         </dd>
     </dl>
 </div>
-<h2>Tickets Purchased:</h2>
+<h2><strong>Tickets Purchased:</strong></h2> <p> @Model.Purchases?.Sum(p => p.TicketSales) ?? 0</p>
 <div>
-    <a asp-controller="Shows" asp-action="Edit" asp-route-id="@Model?.ShowId">Edit</a> | 
+    <a asp-controller="Shows" asp-action="Edit" asp-route-id="@Model.ShowId">Edit</a> | 
     <a asp-controller="Home" asp-action="Index">Back to List</a>
 </div>

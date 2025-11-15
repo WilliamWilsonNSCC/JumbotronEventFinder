@@ -39,7 +39,7 @@ namespace JumbotronEventFinder.Controllers
 
             var show = await _context.Show
                 .Include(s => s.Category)
-                //.Include(s => s.Purchases)
+                .Include(s => s.Purchases)
                 .FirstOrDefaultAsync(m => m.ShowId == id);
 
             if (show == null)
