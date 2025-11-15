@@ -4,15 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JumbotronEventFinder.Controllers
 {
-    public class PurchaseController : Controller
+    public class PurchasesController : Controller
     {
         private readonly JumbotronEventFinderContext _context;
-        public PurchaseController(JumbotronEventFinderContext context)
+        public PurchasesController(JumbotronEventFinderContext context)
         {
             _context = context;
         }
 
-        //GET: Purchase/Index
+        //GET: Purchases/Index
         public IActionResult Index(int showId, string title)
         {
             var purchase = new Purchase { ShowId = showId };

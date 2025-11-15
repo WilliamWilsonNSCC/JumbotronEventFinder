@@ -54,9 +54,9 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Category.Title)
         </dd>
-    </dl>
+    </dl>  
 </div>
-<h2><strong>Tickets Purchased:</strong></h2> <p> @Model.Purchases?.Sum(p => p.TicketSales) ?? 0</p>
+<h3><strong>Tickets Purchased:</strong> @Model.Purchases?.Sum(p => p.TicketSales)</h3>
 <div>
     <a asp-controller="Shows" asp-action="Edit" asp-route-id="@Model.ShowId">Edit</a> | 
     <a asp-controller="Home" asp-action="Index">Back to List</a>
