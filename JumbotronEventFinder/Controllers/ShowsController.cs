@@ -143,8 +143,6 @@ namespace JumbotronEventFinder.Controllers
                 //
                 if (show.FormFile != null)
                 {
-                    //// determine new filename         
-                    //string newFilename = Guid.NewGuid().ToString() + Path.GetExtension(show.FormFile.FileName); // f81d4fae-7dec-11d0-a765-00a0c91e6bf6.jpg
 
                     //Blob code added Nov 3/2025
 
@@ -181,29 +179,6 @@ namespace JumbotronEventFinder.Controllers
 
                     // assign the blob URL to the record to save in Db
                     show.Filename = blobURL;
-
-                    ////Delete the old file
-                    //if (!string.IsNullOrEmpty(show.Filename) && show.Filename != newFilename)
-                    //{
-                    //    string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", show.Filename);
-                    //    if (System.IO.File.Exists(oldFilePath))
-                    //    {
-                    //        System.IO.File.Delete(oldFilePath);
-                    //    }
-
-                    //}
-
-                    //// set the new filename in the db record
-                    //show.Filename = newFilename;
-
-                    //// upload the new file
-                    //string saveFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", newFilename);
-
-                    //// Save file
-                    //using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create))
-                    //{
-                    //    await show.FormFile.CopyToAsync(fileStream);
-                    //}
                 }
                 
                 //
@@ -279,11 +254,6 @@ namespace JumbotronEventFinder.Controllers
                     {
                         Console.WriteLine($"Error deleting blob: {ex.Message}");
                     }
-                    //string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "photos", show.Filename);
-                    //if (System.IO.File.Exists(filePath))
-                    //{
-                    //    System.IO.File.Delete(filePath);
-                    //}
                 }
 
                 _context.Show.Remove(show);

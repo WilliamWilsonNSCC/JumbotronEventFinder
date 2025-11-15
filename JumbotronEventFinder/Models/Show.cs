@@ -24,9 +24,10 @@ namespace JumbotronEventFinder.Models
 
         //Navigation property
         public Category? Category { get; set; }
+        public List<Purchase>? Purchases { get; set; }
 
         [NotMapped]
-        [Display(Name = "Photograph")]
+        [Display(Name = "Shows")]
         public IFormFile? FormFile { get; set; } //Nullable
     }
 }
