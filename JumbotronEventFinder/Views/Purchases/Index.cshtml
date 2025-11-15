@@ -42,14 +42,15 @@
                 <span asp-validation-for="CardNumber" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="CardNumber" class="control-label"></label>
-                <input asp-for="CardNumber" class="form-control" />
-                <span asp-validation-for="CardNumber" class="text-danger"></span>
+                <label asp-for="ExpirationDate" class="control-label">Expiration Date (MM/YY)</label>
+                <input type="text" asp-for="ExpirationDate" class="form-control" placeholder="MM/YY" pattern="^(0[1-9]|1[0-2])\/\d{2}$" required/>
+                <span asp-validation-for="ExpirationDate" class="text-danger"></span>
+                <small class="text-muted">Format: MM/YY</small>
             </div>
             <div class="mb-3">
-                <label asp-for="CardNumber" class="control-label"></label>
-                <input asp-for="CardNumber" class="form-control" />
-                <span asp-validation-for="CardNumber" class="text-danger"></span>
+                <label asp-for="CCV" class="control-label"></label>
+                <input asp-for="CCV" class="form-control" />
+                <span asp-validation-for="CCV" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <input type="submit" value="Review Purchase" class="btn btn-primary" />

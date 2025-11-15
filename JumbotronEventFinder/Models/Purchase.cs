@@ -19,7 +19,8 @@ namespace JumbotronEventFinder.Models
 
         public int CardNumber { get; set; }
 
-        public DateOnly Expiration { get; set; }
+        [NotMapped]
+        public string ExpirationDate { get; set; } = string.Empty;
 
         public int CCV { get; set; }
 
