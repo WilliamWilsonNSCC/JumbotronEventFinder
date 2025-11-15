@@ -15,7 +15,7 @@
 
 <div class="bg-secondary-subtle">
     <h4>Show</h4>
-    <h5><a asp-controller="Purchase" asp-action="Index" asp-route-id="@Model.Title">Purchase Tickets</a></h5>
+    <a asp-controller="Purchases" asp-action="Index" asp-route-id="@Model?.Title">Purchase Tickets</a>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">

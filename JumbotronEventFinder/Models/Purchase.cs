@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Humanizer;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JumbotronEventFinder.Models
@@ -16,7 +17,11 @@ namespace JumbotronEventFinder.Models
 
         public string PaymentType { get; set; } = string.Empty;
 
-        public int PaymentInfo { get; set; }
+        public int CardNumber { get; set; }
+
+        public DateOnly Expiration { get; set; }
+
+        public int CCV { get; set; }
 
         //Foreign Key
         [Display(Name = "Show")]
