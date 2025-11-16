@@ -15,8 +15,8 @@ namespace JumbotronEventFinder.Controllers
         //GET: Purchases/Index
         public IActionResult Index(int showId)
         {
-            var purchase = new Purchase { ShowId = showId };
-            return View(purchase); //show form
+            var purchases = new Purchase { ShowId = showId };
+            return View(purchases); //show form
         }
 
         //POST: Purchases/Index (collect data then check for confirmation)

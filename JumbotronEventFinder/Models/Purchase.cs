@@ -32,7 +32,7 @@ namespace JumbotronEventFinder.Models
         public Show? Show { get; set; } //nullable
 
         [NotMapped]
-        [Display(Name = "Purchases")]
+        [Display(Name = "Purchase")]
         public IFormFile? FormFile { get; set; } //Nullable
     }
 }

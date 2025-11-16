@@ -24,6 +24,7 @@ namespace JumbotronEventFinder.Controllers
             var shows = await _context.Show
                 .OrderBy(m => m.Date)
                 .Include(s => s.Category)
+                .Include(s => s.Purchases)
                 .ToListAsync();
 
             return View(shows);
