@@ -55,7 +55,7 @@ namespace JumbotronEventFinder.Controllers
                 return NotFound();
             }
 
-            if(TempData.Peek("CardNumber") is string cardNumber)
+            if (TempData.Peek("CardNumber") is string cardNumber)
             {
                 purchase.CardNumber = cardNumber;
             }

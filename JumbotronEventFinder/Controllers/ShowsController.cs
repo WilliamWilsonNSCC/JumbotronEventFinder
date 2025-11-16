@@ -6,13 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
 
 namespace JumbotronEventFinder.Controllers
 {
@@ -39,7 +32,7 @@ namespace JumbotronEventFinder.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "CategoryId", "Title");
-            
+
             return View();
         }
 
@@ -51,7 +44,7 @@ namespace JumbotronEventFinder.Controllers
         public async Task<IActionResult> Create([Bind("ShowId,Title,Description,Location,Creator,Date,CategoryId,FormFile")] Show show)
         {
             show.CreateDate = DateTime.Now;
-            
+
             if (ModelState.IsValid)
             {
                 //
@@ -156,7 +149,8 @@ namespace JumbotronEventFinder.Controllers
                                 var oldBlob = _containerClient.GetBlobClient(oldBlobName);
                                 await oldBlob.DeleteIfExistsAsync();
                             }
-                        }catch(Exception ex)
+                        }
+                        catch (Exception ex)
                         {
                             Console.WriteLine($"Error deleting old blob: {ex.Message}");
                         }
@@ -180,7 +174,7 @@ namespace JumbotronEventFinder.Controllers
                     // assign the blob URL to the record to save in Db
                     show.Filename = blobURL;
                 }
-                
+
                 //
                 //Step 2: save in database
                 //
@@ -250,7 +244,8 @@ namespace JumbotronEventFinder.Controllers
                             var blob = _containerClient.GetBlobClient(blobName);
                             await blob.DeleteIfExistsAsync();
                         }
-                    }catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         Console.WriteLine($"Error deleting blob: {ex.Message}");
                     }
@@ -277,7 +272,7 @@ namespace JumbotronEventFinder.Controllers
                 return string.Empty;
             }
 
-            if(Uri.TryCreate(blobUrl, UriKind.Absolute, out Uri uri))
+            if (Uri.TryCreate(blobUrl, UriKind.Absolute, out Uri uri))
             {
                 string path = uri.PathAndQuery;
 
@@ -285,7 +280,7 @@ namespace JumbotronEventFinder.Controllers
 
                 int containerIndex = path.IndexOf($"/jumborton-event-uploads/", StringComparison.OrdinalIgnoreCase);
 
-                if(containerIndex != -1)
+                if (containerIndex != -1)
                 {
                     return path.Substring(containerIndex + containerName.Length + 2);
                 }

@@ -2,16 +2,14 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace JumbotronEventFinder.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IConfiguration _configuration;
-        
-        
+
+
         public AccountController(IConfiguration configuration)
         {
             _configuration = configuration;

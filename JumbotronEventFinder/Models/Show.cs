@@ -19,7 +19,7 @@ namespace JumbotronEventFinder.Models
         public DateTime CreateDate { get; set; }
 
         //Foreign Key
-        [Display(Name="Category")]
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
         //Navigation property

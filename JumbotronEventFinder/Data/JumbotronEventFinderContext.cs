@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using JumbotronEventFinder.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace JumbotronEventFinder.Data
 {
     public class JumbotronEventFinderContext : DbContext
     {
-        public JumbotronEventFinderContext (DbContextOptions<JumbotronEventFinderContext> options)
+        public JumbotronEventFinderContext(DbContextOptions<JumbotronEventFinderContext> options)
             : base(options)
         {
         }
