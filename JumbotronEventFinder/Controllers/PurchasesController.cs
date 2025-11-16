@@ -134,7 +134,7 @@ namespace JumbotronEventFinder.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Purchase completed successfully!";
-            return RedirectToAction("Success", new { id = purchase.PurchaseId });
+            return RedirectToAction("Index", "Home");
         }
 
         //GET: Purchases/Success
