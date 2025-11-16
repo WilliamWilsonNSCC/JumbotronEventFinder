@@ -41,9 +41,14 @@ namespace JumbotronEventFinder.Controllers
                 ModelState.AddModelError("CardNumber", "Card number must be exactly 16 digits.");
             }
 
-            if ()
+            if (string.IsNullOrWhiteSpace(purchase.CVV.ToString()) || purchase.CVV != 3)
             {
-                ModelState.AddModelError("CVV", )
+                ModelState.AddModelError("CVV", "CVV must be exactly 3 digits.");
+            }
+
+            if (string.IsNullOrWhiteSpace(purchase.ExpirationDate) || !System.Text.RegularExpressions.Regex.IsMatch(purchase.ExpirationDate, @"^(0[1-9]|1[0-2])\/\d{2}$"))
+            {
+                ModelState.AddModelError("Expiration", "Expiration must be in MM/YY format.");
             }
 
             if (ModelState.IsValid)
