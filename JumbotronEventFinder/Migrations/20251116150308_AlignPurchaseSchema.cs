@@ -11,7 +11,7 @@ namespace JumbotronEventFinder.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "CardNumber",
-                table: "Purchases",
+                table: "Purchase",
                 type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(int),
@@ -20,12 +20,12 @@ namespace JumbotronEventFinder.Migrations
 
             migrationBuilder.RenameColumn(
                 name: "CCV",
-                table: "Purchases",
+                table: "Purchase",
                 newName: "CVV");
 
             migrationBuilder.AlterColumn<int>(
                 name: "CVV",
-                table: "Purchases",
+                table: "Purchase",
                 type: "int",
                 nullable: true,
                 oldClrType: typeof(int),
@@ -37,7 +37,7 @@ namespace JumbotronEventFinder.Migrations
 
             migrationBuilder.AlterColumn<int>(
                 name: "CVV",
-                table: "Purchases",
+                table: "Purchase",
                 type: "int",
                 nullable: false,
                 defaultValue: 0,
@@ -47,12 +47,12 @@ namespace JumbotronEventFinder.Migrations
 
             migrationBuilder.RenameColumn(
                 name: "CVV",
-                table: "Purchases",
+                table: "Purchase",
                 newName: "CCV");
 
             migrationBuilder.AlterColumn<int>(
                 name: "CardNumber",
-                table: "Purchases",
+                table: "Purchase",
                 type: "int",
                 nullable: false,
                 oldClrType: typeof(string),
