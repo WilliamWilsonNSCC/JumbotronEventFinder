@@ -1,34 +1,57 @@
 ﻿@model JumbotronEventFinder.Models.Purchase
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Confirm Purchase";
 }
 
 <h2>Confirm Purchase</h2>
+<hr />
 
-    <p><strong>Show ID:</strong> @Model.ShowId</p>
-    <p><strong>Name:</strong> @Model.Name</p>
-    <p><strong>Email:</strong> @Model.Email</p>
-    <p><strong>Tickets:</strong> @Model.TicketSales</p>
-    <p><strong>Payment Type:</strong> @Model.PaymentType</p>
-    <p><strong>Card Info:</strong> @Model.CardNumber</p>
+<div class="row">
+    <div class="col-md-6">
+        <h4>Purchase Details</h4>
+        <dl class="row">
+            <dt class="col-sm-4">Show ID:</dt>
+            <dd class="col-sm-8">@Model.ShowId</dd>
 
-<form asp-controller="Purchases" asp-action="Confirm" method="post">
-    
-    Confirm
-        @Html.HiddenFor(m => m.ShowId)
-        @Html.HiddenFor(m => m.Name)
-        @Html.HiddenFor(m => m.Email)
-        @Html.HiddenFor(m => m.TicketSales)
-        @Html.HiddenFor(m => m.PaymentType)
-        @Html.HiddenFor(m => m.CardNumber)
-    
-    <div class="form-group">
-        <button type="submit" class="btn btn-success">Confirm Purchase</button>
-        <a asp-action="Index" asp-route-showId="@Model.ShowId" class="btn btn-secondary">Edit</a>
-        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <dt class="col-sm-4">Name:</dt>
+            <dd class="col-sm-8">@Model.Name</dd>
+
+            <dt class="col-sm-4">Email:</dt>
+            <dd class="col-sm-8">@Model.Email</dd>
+
+            <dt class="col-sm-4">Tickets:</dt>
+            <dd class="col-sm-8">@Model.TicketSales</dd>
+
+            <dt class="col-sm-4">Payment Type:</dt>
+            <dd class="col-sm-8">@Model.PaymentType</dd>
+
+            <dt class="col-sm-4">Card Number:</dt>
+            <dd class="col-sm-8">
+                @if (!string.IsNullOrEmpty(Model.CardNumber) && Model.CardNumber.Length >= 4)
+                {
+                    @($"**** **** **** {Model.CardNumber.Substring(Model.CardNumber.Length - 4)}")
+                }
+                else
+                {
+                    @("****")
+                }
+            </dd>
+
+            <dt class="col-sm-4">Expiration:</dt>
+            <dd class="col-sm-8">@Model.ExpirationDate</dd>
+        </dl>
+
+        <form asp-controller="Purchases" asp-action="Confirm" asp-route-id="@Model.PurchaseId" method="post">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Confirm Purchase</button>
+                <a asp-action="Index" asp-route-showId="@Model.ShowId" class="btn btn-secondary">Edit</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

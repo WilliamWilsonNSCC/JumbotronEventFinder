@@ -107,11 +107,16 @@ namespace JumbotronEventFinder.Controllers
             return View(purchase);
         }
 
-        //POST: Purchases/Confirm (Final confirmation and payment processing)
+        //POST: Purchases/Success (Final confirmation and payment processing)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Confirm(int id)
+        public async Task<IActionResult> Confirm(int? id)
         {
+            if (id == null)
+            {
+                return BadRequest("Purchase ID is required.");
+            }
+
             var purchase = await _context.Purchase.FindAsync(id);
 
             if (purchase == null)
