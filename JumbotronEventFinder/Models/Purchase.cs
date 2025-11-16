@@ -17,7 +17,7 @@ namespace JumbotronEventFinder.Models
 
         public string PaymentType { get; set; } = string.Empty;
 
-        public int CardNumber { get; set; }
+        public string CardNumber { get; set; } = string.Empty;
 
         [NotMapped]
         public string ExpirationDate { get; set; } = string.Empty;

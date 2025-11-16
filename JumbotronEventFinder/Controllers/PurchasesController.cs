@@ -26,7 +26,21 @@ namespace JumbotronEventFinder.Controllers
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Details", purchase);
+                return RedirectToAction("Details", new { id = purchase.PurchaseId });
+            }
+            return View(purchase);
+        }
+
+
+        //GET: Purchase/details (check that details are correct before continuing)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Details(int id)
+        {
+            var purchase = _context.Purchase.FirstOrDefault(p => p.PurchaseId == id);
+            if (purchase == null)
+            {
+                return NotFound();
             }
             return View(purchase);
         }
@@ -36,12 +50,12 @@ namespace JumbotronEventFinder.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Confirm(Purchase purchase)
         {
-            if (purchase.CardNumber != 16 || string.IsNullOrWhiteSpace(purchase.CardNumber.ToString()))
+            if (string.IsNullOrWhiteSpace(purchase.CardNumber) || purchase.CardNumber.Length != 16)
             {
                 ModelState.AddModelError("CardNumber", "Card number must be exactly 16 digits.");
             }
 
-            if (string.IsNullOrWhiteSpace(purchase.CVV.ToString()) || purchase.CVV != 3)
+            if (purchase.CVV < 100 || purchase.CVV > 999)
             {
                 ModelState.AddModelError("CVV", "CVV must be exactly 3 digits.");
             }
@@ -55,7 +69,7 @@ namespace JumbotronEventFinder.Controllers
             {
                 _context.Add(purchase);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", new { showId = purchase.ShowId });
             }
             return RedirectToAction("Index", purchase.ShowId);
         }

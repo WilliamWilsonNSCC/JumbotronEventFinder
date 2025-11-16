@@ -1,10 +1,34 @@
 ﻿@model JumbotronEventFinder.Models.Purchase
 
+@{
+    ViewData["Title"] = "Purchases";
+}
+
 <h2>Confirm Purchase</h2>
 
-<p><strong>Show Title: </strong></p>
-<p><strong></strong></p>
-<p><strong></strong></p>
-<p><strong></strong></p>
-<p><strong></strong></p>
-<p><strong></strong></p>
+<form>
+    <p><strong>Show ID:</strong> @Model.ShowId</p>
+    <p><strong>Name:</strong> @Model.Name</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Tickets:</strong> @Model.TicketSales</p>
+    <p><strong>Payment Type:</strong> @Model.PaymentType</p>
+    <p><strong>Card Info:</strong> @Model.CardNumber</p>
+
+    Confirm
+        @Html.HiddenFor(m => m.ShowId)
+        @Html.HiddenFor(m => m.Name)
+        @Html.HiddenFor(m => m.Email)
+        @Html.HiddenFor(m => m.TicketSales)
+        @Html.HiddenFor(m => m.PaymentType)
+        @Html.HiddenFor(m => m.CardNumber)
+    <div>
+        <button type="submit" class="btn btn-success">Purchase</button>
+        <a asp-controller="Home" asp-action="Index">Back to List</a>
+    </div>   
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
