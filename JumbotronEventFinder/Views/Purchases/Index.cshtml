@@ -11,7 +11,7 @@
     <div class="col-md-4">
         <form asp-controller="Purchases" asp-action="Index" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ShowId" />
+            @* <input type="hidden" asp-for="ShowId" /> *@
             <div class="mb-3">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
