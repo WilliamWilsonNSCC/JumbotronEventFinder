@@ -76,7 +76,7 @@ namespace JumbotronEventFinder.Controllers
             {
                 _context.Add(purchase);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", new { showId = purchase.ShowId });
+                return RedirectToAction("Index", new { purchase.ShowId });
             }
             return RedirectToAction("Index", purchase.ShowId);
         }
