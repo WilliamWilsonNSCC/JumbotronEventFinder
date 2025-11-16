@@ -3,6 +3,7 @@ using JumbotronEventFinder.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace JumbotronEventFinder.Controllers
 {
@@ -16,8 +17,14 @@ namespace JumbotronEventFinder.Controllers
         }
 
         //GET: Purchases/Index
-        public IActionResult Index(int showId)
+        public async Task<IActionResult> Index(int showId)
         {
+            var show = await _context.Show.FindAsync(showId);
+            if(show == null)
+            {
+                TempData["Error"] = "Show not found!";
+                return RedirectToAction("Index", "Home");
+            }
             var purchase = new Purchase { ShowId = showId };
             return View(purchase); //show form
         }
@@ -27,6 +34,13 @@ namespace JumbotronEventFinder.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(Purchase purchase)
         {
+            var show = await _context.Show.FindAsync(purchase.ShowId);
+            if (show == null)
+            {
+                ModelState.AddModelError("ShowId", "Invalid show selected.");
+                return View(purchase);
+            }
+
             // Validate credit card format before proceeding
             if (string.IsNullOrWhiteSpace(purchase.CardNumber) || purchase.CardNumber.Length != 16)
             {
