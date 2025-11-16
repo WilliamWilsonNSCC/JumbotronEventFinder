@@ -1,0 +1,48 @@
+﻿@model JumbotronEventFinder.Models.Purchase
+@{
+    ViewData["Title"] = "Purchase Successful";
+}
+
+<div class="text-center">
+    <h1 class="text-success">✓ Purchase Successful!</h1>
+    <hr />
+
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Thank you for your purchase!</h4>
+        <p>Your tickets have been confirmed. A confirmation email has been sent to <strong>@Model.Email</strong></p>
+    </div>
+
+    <div class="card mx-auto" style="max-width: 500px;">
+        <div class="card-header">
+            <h5>Order Summary</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-6">Order Number:</dt>
+                <dd class="col-sm-6">@Model.PurchaseId</dd>
+
+                <dt class="col-sm-6">Number of Tickets:</dt>
+                <dd class="col-sm-6">@Model.TicketSales</dd>
+
+                <dt class="col-sm-6">Customer Name:</dt>
+                <dd class="col-sm-6">@Model.Name</dd>
+
+                @if (Model.Show != null)
+                {
+                    <dt class="col-sm-6">Event:</dt>
+                    <dd class="col-sm-6">@Model.Show.Title</dd>
+
+                    <dt class="col-sm-6">Date:</dt>
+                    <dd class="col-sm-6">@Model.Show.Date.ToString("MMM dd, yyyy")</dd>
+
+                    <dt class="col-sm-6">Location:</dt>
+                    <dd class="col-sm-6">@Model.Show.Location</dd>
+                }
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Events</a>
+    </div>
+</div>

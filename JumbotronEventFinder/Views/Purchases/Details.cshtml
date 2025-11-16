@@ -13,6 +13,8 @@
     <p><strong>Payment Type:</strong> @Model.PaymentType</p>
     <p><strong>Card Info:</strong> @Model.CardNumber</p>
 
+<form asp-controller="Purchases" asp-action="Confirm" method="post">
+    
     Confirm
         @Html.HiddenFor(m => m.ShowId)
         @Html.HiddenFor(m => m.Name)
@@ -20,11 +22,13 @@
         @Html.HiddenFor(m => m.TicketSales)
         @Html.HiddenFor(m => m.PaymentType)
         @Html.HiddenFor(m => m.CardNumber)
-    <div>
-        <button type="submit" class="btn btn-success">Purchase</button>
-        <a asp-controller="Home" asp-action="Index">Back to List</a>
-    </div>   
-
+    
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Confirm Purchase</button>
+        <a asp-action="Index" asp-route-showId="@Model.ShowId" class="btn btn-secondary">Edit</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
