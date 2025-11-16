@@ -17,7 +17,7 @@ namespace JumbotronEventFinder.Migrations
                 oldType: "int");
 
             migrationBuilder.RenameColumn(
-                name: "CCV",
+                name: "CVV",
                 table: "Purchase",
                 newName: "CVV");
 
