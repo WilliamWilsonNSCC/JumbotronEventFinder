@@ -35,7 +35,7 @@ namespace JumbotronEventFinder.Controllers
         //GET: Purchase/details (check that details are correct before continuing)
         public IActionResult Details(int id)
         {
-            var purchase = _context.Purchases.FirstOrDefault(p => p.PurchaseId == id);
+            var purchase = _context.Purchase.FirstOrDefault(p => p.PurchaseId == id);
             if (purchase == null)
             {
                 return NotFound();
