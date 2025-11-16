@@ -17,7 +17,7 @@ namespace JumbotronEventFinder.Data
         public DbSet<JumbotronEventFinder.Models.Show> Show { get; set; } = default!;
         public DbSet<JumbotronEventFinder.Models.Category> Category { get; set; } = default!;
         public
-            DbSet<Purchase> Purchase
+            DbSet<Purchase> Purchases
         { get; set; } = default!;
     }
 }
