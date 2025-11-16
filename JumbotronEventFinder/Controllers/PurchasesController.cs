@@ -33,8 +33,7 @@ namespace JumbotronEventFinder.Controllers
 
 
         //GET: Purchase/details (check that details are correct before continuing)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public IActionResult Details(int id)
         {
             var purchase = _context.Purchase.FirstOrDefault(p => p.PurchaseId == id);
