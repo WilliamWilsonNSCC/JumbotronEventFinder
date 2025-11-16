@@ -8,7 +8,6 @@ namespace JumbotronEventFinder.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
             migrationBuilder.AlterColumn<string>(
                 name: "CardNumber",
                 table: "Purchase",
@@ -16,7 +15,6 @@ namespace JumbotronEventFinder.Migrations
                 nullable: false,
                 oldClrType: typeof(int),
                 oldType: "int");
-
 
             migrationBuilder.RenameColumn(
                 name: "CCV",
