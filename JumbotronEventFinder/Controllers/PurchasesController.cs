@@ -15,8 +15,8 @@ namespace JumbotronEventFinder.Controllers
         //GET: Purchases/Index
         public IActionResult Index(int showId)
         {
-            var purchases = new Purchase { ShowId = showId };
-            return View(purchases); //show form
+            var purchase = new Purchase { ShowId = showId };
+            return View(purchase); //show form
         }
 
         //POST: Purchases/Index (collect data then check for confirmation)
@@ -34,6 +34,7 @@ namespace JumbotronEventFinder.Controllers
 
         //GET: Purchase/details (check that details are correct before continuing)
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Details(int id)
         {
             var purchase = _context.Purchase.FirstOrDefault(p => p.PurchaseId == id);
