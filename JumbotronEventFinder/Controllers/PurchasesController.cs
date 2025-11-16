@@ -29,7 +29,6 @@ namespace JumbotronEventFinder.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(purchase);
-                _context.SaveChanges();
                 return RedirectToAction("Details", new { id = purchase.PurchaseId });
             }
 
