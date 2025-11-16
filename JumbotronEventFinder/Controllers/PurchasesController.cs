@@ -1,9 +1,11 @@
 ﻿using JumbotronEventFinder.Data;
 using JumbotronEventFinder.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JumbotronEventFinder.Controllers
 {
+    [Authorize]
     public class PurchasesController : Controller
     {
         private readonly JumbotronEventFinderContext _context;
