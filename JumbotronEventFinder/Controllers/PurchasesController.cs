@@ -26,10 +26,9 @@ namespace JumbotronEventFinder.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(Purchase purchase)
         {
+            Console.WriteLine($"ShowId: {purchase.ShowId}");
             if (ModelState.IsValid)
             {
-                _context.Add(purchase);
-                _context.SaveChanges();
                 return RedirectToAction("Details", new { id = purchase.PurchaseId });
             }
 
