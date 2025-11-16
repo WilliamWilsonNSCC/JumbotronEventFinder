@@ -13,10 +13,9 @@ namespace JumbotronEventFinder.Controllers
         }
 
         //GET: Purchases/Index
-        public IActionResult Index(int showId, string title)
+        public IActionResult Index(int showId)
         {
             var purchase = new Purchase { ShowId = showId };
-            ViewBag.ShowTitle = title;
             return View(purchase); //show form
         }
 
@@ -37,6 +36,16 @@ namespace JumbotronEventFinder.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Confirm(Purchase purchase)
         {
+            if (purchase.CardNumber != 16 || string.IsNullOrWhiteSpace(purchase.CardNumber.ToString()))
+            {
+                ModelState.AddModelError("CardNumber", "Card number must be exactly 16 digits.");
+            }
+
+            if ()
+            {
+                ModelState.AddModelError("CVV", )
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(purchase);

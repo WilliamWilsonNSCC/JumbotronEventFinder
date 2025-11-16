@@ -22,7 +22,7 @@ namespace JumbotronEventFinder.Models
         [NotMapped]
         public string ExpirationDate { get; set; } = string.Empty;
 
-        public int CCV { get; set; }
+        public int CVV { get; set; }
 
         //Foreign Key
         [Display(Name = "Show")]
