@@ -47,7 +47,7 @@ namespace JumbotronEventFinder.Controllers
             {
                 // 3. Save the initial, non-sensitive purchase record.
                 _context.Add(purchase);
-                await _context.SaveChangesAsync(); // <-- THIS CREATES THE PurchaseId
+                //await _context.SaveChangesAsync();
 
                 // 4. Redirect to Details using the newly generated PurchaseId
                 return RedirectToAction("Details", new { id = purchase.PurchaseId });
